@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.devpro.android54_day11.R
+import com.devpro.android54_day11.adapter.CommentAdapter
 import com.devpro.android54_day11.base.BaseFragment
 import com.devpro.android54_day11.databinding.FragmentHomeBinding
 import com.devpro.android54_day11.network.api.ApiResponse
@@ -17,6 +20,7 @@ import com.devpro.android54_day11.viewmodels.CommentViewModelFactory
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private lateinit var commentViewModel: CommentViewModel
+    private lateinit var mCommentAdapter: CommentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,14 +40,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         commentViewModel.commentData.observe(viewLifecycleOwner) { response ->
 
             when (response) {
-                is ApiResponse.Loading->{
+                is ApiResponse.Loading -> {
                     showLoadingDialog()
                 }
-                is ApiResponse.Success->{
+
+                is ApiResponse.Success -> {
                     hideLoadingDialog()
+                    mCommentAdapter = CommentAdapter()
+                    response.data?.let {
+                        mCommentAdapter.updateData(it.comments)
+                        binding.rvComment.apply {
+                            adapter = mCommentAdapter
+                            layoutManager = LinearLayoutManager(this@HomeFragment.context)
+                        }
+                    }
                 }
-                is ApiResponse.Failed->{
+
+                is ApiResponse.Failed -> {
                     hideLoadingDialog()
+                    Toast.makeText(
+                        this@HomeFragment.context,
+                        "${response.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
             }

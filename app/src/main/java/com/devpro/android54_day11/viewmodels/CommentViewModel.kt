@@ -14,11 +14,10 @@ class CommentViewModel(application: Application,val commentRepository: CommentRe
     val commentData = MutableLiveData<ApiResponse<CommentResponse>>()
 
     fun getComment(){
-        commentData.value = ApiResponse.Loading()
-        viewModelScope.launch {
-            val response = commentRepository.getComments()
-            commentData.value = response
-        }
-
+            commentData.value = ApiResponse.Loading()
+            viewModelScope.launch {
+                val response = commentRepository.getComments()
+                commentData.value = response
+            }
     }
 }
