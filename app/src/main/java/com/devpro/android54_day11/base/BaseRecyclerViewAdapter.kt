@@ -42,7 +42,5 @@ abstract class BaseRecyclerViewAdapter<T : Any, VBD : ViewDataBinding> :
         return mListData.size
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder<VBD>, position: Int) {
-
-    }
+    override fun onBindViewHolder(holder: BaseViewHolder<VBD>, position: Int) {}
 }
