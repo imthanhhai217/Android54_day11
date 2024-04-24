@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseRecyclerViewAdapter<T : Any, VBD : ViewDataBinding> :
     RecyclerView.Adapter<BaseRecyclerViewAdapter.Companion.BaseViewHolder<VBD>>() {
     companion object {
-        class BaseViewHolder<VBD : ViewDataBinding>(binding: VBD) :
+        open class BaseViewHolder<VBD : ViewDataBinding>(var binding: VBD) :
             RecyclerView.ViewHolder(binding.root)
     }
 
@@ -23,18 +23,24 @@ abstract class BaseRecyclerViewAdapter<T : Any, VBD : ViewDataBinding> :
 
     var listener: ((view: View, item: T, position: Int) -> Unit)? = null
 
-    abstract fun getLayout():Int
+    abstract fun getLayout(): Int
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<VBD> = BaseViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),getLayout(),parent,false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<VBD> =
+        BaseViewHolder(
+            DataBindingUtil.inflate(
+                LayoutInflater.from(parent.context),
+                getLayout(),
+                parent,
+                false
+            )
+        )
 
     override fun getItemCount(): Int {
-        if (mListData.isEmpty()){
+        if (mListData.isEmpty()) {
             return 0
         }
         return mListData.size
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder<VBD>, position: Int) {
-
-    }
+    override fun onBindViewHolder(holder: BaseViewHolder<VBD>, position: Int) {}
 }
