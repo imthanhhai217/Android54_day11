@@ -1,6 +1,7 @@
 package com.devpro.android54_day11.adapter
 
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.devpro.android54_day11.R
 import com.devpro.android54_day11.base.BaseRecyclerViewAdapter
 import com.devpro.android54_day11.databinding.LayoutItemCommentBinding
@@ -14,7 +15,7 @@ class CommentAdapter:BaseRecyclerViewAdapter<Comment,LayoutItemCommentBinding>()
         position: Int
     ) {
         holder.binding.comment = mListData[position]
-        holder.binding.tvComment.setOnClickListener{
+        holder.binding.tvCommentBody.setOnClickListener{
             listener?.invoke(it,mListData[position], position)
         }
     }

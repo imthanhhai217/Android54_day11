@@ -1,5 +1,6 @@
 package com.devpro.android54_day11.base
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ abstract class BaseRecyclerViewAdapter<T : Any, VBD : ViewDataBinding> :
     }
 
     var mListData = mutableListOf<T>()
+    lateinit var mContext: Context
 
     fun updateData(data: List<T>) {
         this.mListData = data as MutableList<T>
@@ -25,8 +27,9 @@ abstract class BaseRecyclerViewAdapter<T : Any, VBD : ViewDataBinding> :
 
     abstract fun getLayout(): Int
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<VBD> =
-        BaseViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<VBD> {
+        this.mContext = parent.context
+        return BaseViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 getLayout(),
@@ -34,6 +37,8 @@ abstract class BaseRecyclerViewAdapter<T : Any, VBD : ViewDataBinding> :
                 false
             )
         )
+    }
+
 
     override fun getItemCount(): Int {
         if (mListData.isEmpty()) {

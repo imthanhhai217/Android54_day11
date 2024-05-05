@@ -13,6 +13,9 @@ class CommentViewModel(application: Application,val commentRepository: CommentRe
 
     val commentData = MutableLiveData<ApiResponse<CommentResponse>>()
 
+    init{
+        getComment()
+    }
     fun getComment(){
             commentData.value = ApiResponse.Loading()
             viewModelScope.launch {
