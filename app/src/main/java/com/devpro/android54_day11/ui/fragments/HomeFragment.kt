@@ -87,10 +87,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun initView() {
         binding.btnLocation.setOnClickListener {
             activity?.let { it1 ->
-                PermissionManager.requestLocationPermission(
-                    it1,
-                    locationResultLauncher
-                )
+                if (ActivityCompat.checkSelfPermission(
+                        requireActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        requireActivity(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ){
+                    PermissionManager.requestLocationPermission(
+                        it1,
+                        locationResultLauncher
+                    )
+                }else{
+                    locationClient.lastLocation.addOnSuccessListener {
+                        Log.d("TAG", ": lat: ${it.latitude} | long: ${it.longitude}")
+                    }
+                }
             }
         }
     }
